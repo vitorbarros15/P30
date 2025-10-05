@@ -33,6 +33,7 @@ async function bootstrap() {
         .addBearerAuth()
         .addTag('Auth', 'Autenticação e autorização')
         .addTag('Jobs', 'Gerenciamento de vagas')
+        .addTag('Candidates', 'Gerenciamento de candidatos')
         .addTag('Migrations', 'Migrações do banco de dados')
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config, {

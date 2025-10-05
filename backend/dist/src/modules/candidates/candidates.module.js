@@ -10,6 +10,8 @@ exports.CandidatesModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const candidate_schema_1 = require("./schemas/candidate.schema");
+const candidates_service_1 = require("./candidates.service");
+const candidates_controller_1 = require("./candidates.controller");
 let CandidatesModule = class CandidatesModule {
 };
 exports.CandidatesModule = CandidatesModule;
@@ -20,7 +22,9 @@ exports.CandidatesModule = CandidatesModule = __decorate([
                 { name: candidate_schema_1.Candidate.name, schema: candidate_schema_1.CandidateSchema },
             ]),
         ],
-        exports: [mongoose_1.MongooseModule],
+        controllers: [candidates_controller_1.CandidatesController],
+        providers: [candidates_service_1.CandidatesService],
+        exports: [candidates_service_1.CandidatesService, mongoose_1.MongooseModule],
     })
 ], CandidatesModule);
 //# sourceMappingURL=candidates.module.js.map

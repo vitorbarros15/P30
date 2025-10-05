@@ -44,6 +44,7 @@ async function bootstrap() {
     .addBearerAuth()
     .addTag('Auth', 'Autenticação e autorização')
     .addTag('Jobs', 'Gerenciamento de vagas')
+    .addTag('Candidates', 'Gerenciamento de candidatos')
     .addTag('Migrations', 'Migrações do banco de dados')
     .build();
   
