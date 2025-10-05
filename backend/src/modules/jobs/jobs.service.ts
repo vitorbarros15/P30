@@ -1,10 +1,12 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { NotFoundException, ConflictException, ValidationException } from '../../shared/exceptions/business.exception';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Job, JobDocument } from './schemas/job.schema';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { JobQueryDto } from './dto/job-query.dto';
+import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class JobsService {
@@ -72,12 +74,12 @@ export class JobsService {
 
   async findOne(id: string): Promise<Job> {
     if (!this.isValidObjectId(id)) {
-      throw new BadRequestException('ID inválido');
+      throw new ValidationException('ID inválido', { field: 'id', value: id });
     }
 
     const job = await this.jobModel.findById(id).lean().exec();
     if (!job) {
-      throw new NotFoundException('Vaga não encontrada');
+      throw new NotFoundException('Vaga', id);
     }
 
     return job;
