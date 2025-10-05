@@ -42,10 +42,21 @@ async function bootstrap() {
     .setDescription('API para gerenciamento de vagas e candidatos')
     .setVersion('1.0')
     .addBearerAuth()
+    .addTag('Auth', 'Autenticação e autorização')
+    .addTag('Jobs', 'Gerenciamento de vagas')
+    .addTag('Migrations', 'Migrações do banco de dados')
     .build();
   
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  const document = SwaggerModule.createDocument(app, config, {
+    operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
+  });
+  
+  SwaggerModule.setup('api/docs', app, document, {
+    swaggerOptions: {
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
+    },
+  });
 
   const port = configService.get('app.port') || 3001;
   await app.listen(port);
@@ -54,6 +65,8 @@ async function bootstrap() {
   console.log(`📊 Environment: ${configService.get('app.nodeEnv')}`);
   console.log(`🔗 Health check: http://localhost:${port}/health`);
   console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
+  console.log(`🔐 Default admin: admin@p30.com / 123456`);
+  console.log(`💡 Run migrations manually: npm run migration:run`);
 }
 
 bootstrap();

@@ -1,0 +1,14 @@
+# Cursor ignore file for backend
+# Allow .env files
+!.env
+!.env.local
+!.env.development
+!.env.production
+
+# Ignore other files
+node_modules/
+dist/
+build/
+coverage/
+*.log
+.DS_Store

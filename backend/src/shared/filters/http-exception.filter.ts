@@ -6,6 +6,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { BusinessException } from '../exceptions/business.exception';
+import { ErrorResponseDto } from '../dto/error-response.dto';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -15,13 +17,29 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
 
-    const errorResponse = {
+    // Se for uma BusinessException, usar a resposta estruturada
+    if (exception instanceof BusinessException) {
+      const errorResponse: ErrorResponseDto = {
+        success: false,
+        message: exception.message,
+        code: (exception.getResponse() as any).code || 'UNKNOWN_ERROR',
+        details: (exception.getResponse() as any).details,
+        timestamp: (exception.getResponse() as any).timestamp || new Date().toISOString(),
+        statusCode: status,
+        path: request.url,
+      };
+
+      return response.status(status).json(errorResponse);
+    }
+
+    // Para outras HttpExceptions, usar formato padrão
+    const errorResponse: ErrorResponseDto = {
       success: false,
-      statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-      method: request.method,
       message: exception.message,
+      code: 'HTTP_ERROR',
+      timestamp: new Date().toISOString(),
+      statusCode: status,
+      path: request.url,
       ...(process.env.NODE_ENV === 'development' && {
         stack: exception.stack,
       }),

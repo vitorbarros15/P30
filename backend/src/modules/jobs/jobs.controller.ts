@@ -12,16 +12,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiErrorResponses } from '../../shared/decorators/api-error-responses.decorator';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { JobQueryDto } from './dto/job-query.dto';
-// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Jobs')
 @Controller('jobs')
-// @UseGuards(JwtAuthGuard) // Uncomment when auth is implemented
-// @ApiBearerAuth() // Uncomment when auth is implemented
+@ApiBearerAuth()
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
@@ -29,7 +28,7 @@ export class JobsController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Criar nova vaga' })
   @ApiResponse({ status: 201, description: 'Vaga criada com sucesso' })
-  @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  @ApiErrorResponses(400, 401, 500)
   async create(@Body() createJobDto: CreateJobDto) {
     const job = await this.jobsService.create(createJobDto);
     return {

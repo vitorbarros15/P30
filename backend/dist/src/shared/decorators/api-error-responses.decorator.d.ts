@@ -1,0 +1,1 @@
+export declare function ApiErrorResponses(...statusCodes: number[]): <TFunction extends Function, Y>(target: TFunction | object, propertyKey?: string | symbol, descriptor?: TypedPropertyDescriptor<Y>) => void;
