@@ -57,7 +57,7 @@ class AxiosHttpClient implements HttpClient {
           console.log(`✅ ${response.config.method?.toUpperCase()} ${response.config.url}`, response.data);
         }
 
-        return this.transformResponse(response);
+        return response;
       },
       (error) => {
         console.error('❌ Response Error:', error);
@@ -121,27 +121,27 @@ class AxiosHttpClient implements HttpClient {
 
   async get<T>(url: string, config?: RequestConfig): Promise<ApiResponse<T>> {
     const response = await this.instance.get(url, config);
-    return response as ApiResponse<T>;
+    return this.transformResponse(response);
   }
 
   async post<T>(url: string, data?: unknown, config?: RequestConfig): Promise<ApiResponse<T>> {
     const response = await this.instance.post(url, data, config);
-    return response as ApiResponse<T>;
+    return this.transformResponse(response);
   }
 
   async put<T>(url: string, data?: unknown, config?: RequestConfig): Promise<ApiResponse<T>> {
     const response = await this.instance.put(url, data, config);
-    return response as ApiResponse<T>;
+    return this.transformResponse(response);
   }
 
   async patch<T>(url: string, data?: unknown, config?: RequestConfig): Promise<ApiResponse<T>> {
     const response = await this.instance.patch(url, data, config);
-    return response as ApiResponse<T>;
+    return this.transformResponse(response);
   }
 
   async delete<T>(url: string, config?: RequestConfig): Promise<ApiResponse<T>> {
     const response = await this.instance.delete(url, config);
-    return response as ApiResponse<T>;
+    return this.transformResponse(response);
   }
 }
 
