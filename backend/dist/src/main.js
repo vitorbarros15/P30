@@ -12,8 +12,19 @@ async function bootstrap() {
     app.use((0, helmet_1.default)());
     const corsOrigins = configService.get('app.cors.origin');
     app.enableCors({
-        origin: corsOrigins,
-        credentials: false,
+        origin: (origin, callback) => {
+            if (!origin) {
+                return callback(null, true);
+            }
+            if (corsOrigins.includes(origin)) {
+                callback(null, true);
+            }
+            else {
+                console.warn(`🚫 CORS blocked origin: ${origin}`);
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
+        credentials: true,
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
         exposedHeaders: ['Authorization'],
@@ -55,9 +66,8 @@ async function bootstrap() {
     await app.listen(port);
     console.log(`🚀 Server running on port ${port}`);
     console.log(`📊 Environment: ${configService.get('app.nodeEnv')}`);
-    console.log(`🔗 Health check: http://localhost:${port}/health`);
-    console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
-    console.log(`🔐 Default admin: admin@p30.com / 123456`);
+    console.log(`🔗 Health check: http:
+  console.log(`, API, Documentation, http, console.log(`🔐 Default admin: admin@p30.com / 123456`));
     console.log(`💡 Run migrations manually: npm run migration:run`);
 }
 bootstrap();
