@@ -1,7 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
 export default registerAs('app', () => {
-  // Configura CORS para aceitar múltiplas origens
   const corsOrigin = process.env.CORS_ORIGIN 
     ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
     : ['http://localhost:3000'];

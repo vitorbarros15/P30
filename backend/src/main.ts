@@ -9,24 +9,20 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
-  // Security
   app.use(helmet());
 
-  // CORS - Configuração robusta para produção
   const corsOrigins = configService.get('app.cors.origin');
   app.enableCors({
     origin: corsOrigins,
-    credentials: false, // Mudado para false pois o frontend usa withCredentials: false
+    credentials: false,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
     exposedHeaders: ['Authorization'],
     maxAge: 3600,
   });
 
-  // Log das origens permitidas
   console.log('🌐 CORS enabled for origins:', corsOrigins);
 
-  // Global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -38,13 +34,11 @@ async function bootstrap() {
     }),
   );
 
-  // API Versioning
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
   });
 
-  // Swagger Documentation
   const config = new DocumentBuilder()
     .setTitle('P30 Jobs API')
     .setDescription('API para gerenciamento de vagas e candidatos')
