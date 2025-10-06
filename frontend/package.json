@@ -10,7 +10,8 @@
     "lint:check": "eslint .",
     "type-check": "tsc --noEmit",
     "build:analyze": "ANALYZE=true next build",
-    "test:api": "node scripts/test-api.js"
+    "test:api": "node scripts/test-api.js",
+    "check:api": "node scripts/check-api-config.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

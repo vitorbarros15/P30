@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { ApiResponse, ApiError, RequestConfig } from '../types';
+import { API_CONFIG } from './api';
 
 // Interface para facilitar troca de biblioteca no futuro
 export interface HttpClient {
@@ -17,11 +18,8 @@ class AxiosHttpClient implements HttpClient {
     this.instance = axios.create({
       baseURL,
       timeout,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      withCredentials: false, // Para evitar problemas de CORS
+      headers: API_CONFIG.headers,
+      withCredentials: API_CONFIG.withCredentials,
     });
 
     this.setupInterceptors();
@@ -146,12 +144,8 @@ class AxiosHttpClient implements HttpClient {
   }
 }
 
-// Configuração padrão
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
-const TIMEOUT = 30000; // 30 segundos
-
 // Instância principal do cliente HTTP
-export const httpClient: HttpClient = new AxiosHttpClient(API_URL, TIMEOUT);
+export const httpClient: HttpClient = new AxiosHttpClient(API_CONFIG.baseURL, API_CONFIG.timeout);
 
 // Função para criar uma nova instância (útil para diferentes bases de URL)
 export const createHttpClient = (baseURL: string, timeout?: number): HttpClient => {
