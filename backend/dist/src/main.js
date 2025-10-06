@@ -10,10 +10,16 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const configService = app.get(config_1.ConfigService);
     app.use((0, helmet_1.default)());
+    const corsOrigins = configService.get('app.cors.origin');
     app.enableCors({
-        origin: configService.get('app.cors.origin'),
-        credentials: true,
+        origin: corsOrigins,
+        credentials: false,
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+        exposedHeaders: ['Authorization'],
+        maxAge: 3600,
     });
+    console.log('🌐 CORS enabled for origins:', corsOrigins);
     app.useGlobalPipes(new common_1.ValidationPipe({
         whitelist: true,
         forbidNonWhitelisted: true,

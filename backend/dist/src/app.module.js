@@ -17,6 +17,7 @@ const jobs_module_1 = require("./modules/jobs/jobs.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const candidates_module_1 = require("./modules/candidates/candidates.module");
 const migrations_module_1 = require("./database/migrations/migrations.module");
+const health_module_1 = require("./health/health.module");
 const database_config_1 = require("./config/database.config");
 const app_config_1 = require("./config/app.config");
 const response_interceptor_1 = require("./shared/interceptors/response.interceptor");
@@ -50,6 +51,7 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             candidates_module_1.CandidatesModule,
             migrations_module_1.MigrationsModule,
+            health_module_1.HealthModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

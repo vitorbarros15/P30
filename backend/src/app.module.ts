@@ -8,6 +8,7 @@ import { JobsModule } from './modules/jobs/jobs.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CandidatesModule } from './modules/candidates/candidates.module';
 import { MigrationsModule } from './database/migrations/migrations.module';
+import { HealthModule } from './health/health.module';
 import databaseConfig from './config/database.config';
 import appConfig from './config/app.config';
 import { ResponseInterceptor } from './shared/interceptors/response.interceptor';
@@ -39,6 +40,7 @@ import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
     AuthModule,
     CandidatesModule,
     MigrationsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [

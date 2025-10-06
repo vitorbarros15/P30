@@ -6,7 +6,7 @@ declare const _default: (() => {
         expiresIn: string;
     };
     cors: {
-        origin: string;
+        origin: string[];
     };
     rateLimit: {
         windowMs: number;
@@ -20,7 +20,7 @@ declare const _default: (() => {
         expiresIn: string;
     };
     cors: {
-        origin: string;
+        origin: string[];
     };
     rateLimit: {
         windowMs: number;

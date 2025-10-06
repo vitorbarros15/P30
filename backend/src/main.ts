@@ -12,11 +12,19 @@ async function bootstrap() {
   // Security
   app.use(helmet());
 
-  // CORS
+  // CORS - Configuração robusta para produção
+  const corsOrigins = configService.get('app.cors.origin');
   app.enableCors({
-    origin: configService.get('app.cors.origin'),
-    credentials: true,
+    origin: corsOrigins,
+    credentials: false, // Mudado para false pois o frontend usa withCredentials: false
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    exposedHeaders: ['Authorization'],
+    maxAge: 3600,
   });
+
+  // Log das origens permitidas
+  console.log('🌐 CORS enabled for origins:', corsOrigins);
 
   // Global validation pipe
   app.useGlobalPipes(
