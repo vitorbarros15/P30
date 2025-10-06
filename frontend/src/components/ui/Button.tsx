@@ -42,6 +42,7 @@ const Button: React.FC<ButtonProps> = ({
 
   const widthClasses = fullWidth ? 'w-full' : '';
 
+  
   return (
     <button
       className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClasses} ${className}`}
