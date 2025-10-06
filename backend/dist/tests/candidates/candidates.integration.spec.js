@@ -7,34 +7,12 @@ const request = require("supertest");
 const candidates_controller_1 = require("../../src/modules/candidates/candidates.controller");
 const candidates_service_1 = require("../../src/modules/candidates/candidates.service");
 const candidate_schema_1 = require("../../src/modules/candidates/schemas/candidate.schema");
+const candidate_mocks_1 = require("../utils/candidate-mocks");
 describe('Candidates Integration Tests', () => {
     let app;
     let candidateModel;
-    const mockCandidate = {
-        _id: '507f1f77bcf86cd799439011',
-        name: 'João Silva',
-        email: 'joao@email.com',
-        skills: ['javascript', 'node.js', 'react'],
-        experienceYears: 3,
-        isInvited: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    };
     beforeAll(async () => {
-        const MockCandidateConstructor = jest.fn().mockImplementation((data) => ({
-            ...data,
-            _id: '507f1f77bcf86cd799439011',
-            save: jest.fn().mockResolvedValue({
-                _id: '507f1f77bcf86cd799439011',
-                ...data,
-            }),
-        }));
-        MockCandidateConstructor.findOne = jest.fn();
-        MockCandidateConstructor.findById = jest.fn();
-        MockCandidateConstructor.find = jest.fn();
-        MockCandidateConstructor.findByIdAndUpdate = jest.fn();
-        MockCandidateConstructor.findByIdAndDelete = jest.fn();
-        MockCandidateConstructor.countDocuments = jest.fn();
+        const MockCandidateConstructor = (0, candidate_mocks_1.createMockCandidateModel)();
         const moduleFixture = await testing_1.Test.createTestingModule({
             controllers: [candidates_controller_1.CandidatesController],
             providers: [
@@ -83,7 +61,7 @@ describe('Candidates Integration Tests', () => {
                 skills: ['JavaScript', 'Node.js'],
                 experienceYears: 3,
             };
-            candidateModel.findOne.mockResolvedValue(mockCandidate);
+            candidateModel.findOne.mockResolvedValue(candidate_mocks_1.mockCandidate);
             await request(app.getHttpServer())
                 .post('/candidates')
                 .send(validCreateDto)
@@ -113,13 +91,12 @@ describe('Candidates Integration Tests', () => {
     });
     describe('GET /candidates', () => {
         it('should return paginated candidates', async () => {
-            const mockCandidates = [mockCandidate];
             const mockCount = 1;
             candidateModel.find.mockReturnValue({
                 skip: jest.fn().mockReturnThis(),
                 limit: jest.fn().mockReturnThis(),
                 sort: jest.fn().mockReturnThis(),
-                exec: jest.fn().mockResolvedValue(mockCandidates),
+                exec: jest.fn().mockResolvedValue(candidate_mocks_1.mockCandidates),
             });
             candidateModel.countDocuments.mockResolvedValue(mockCount);
             const response = await request(app.getHttpServer())
@@ -128,7 +105,7 @@ describe('Candidates Integration Tests', () => {
             expect(response.body).toEqual({
                 success: true,
                 data: {
-                    candidates: mockCandidates,
+                    candidates: candidate_mocks_1.mockCandidates,
                     pagination: {
                         page: 1,
                         limit: 10,
@@ -139,13 +116,12 @@ describe('Candidates Integration Tests', () => {
             });
         });
         it('should filter candidates by name', async () => {
-            const mockCandidates = [mockCandidate];
             const mockCount = 1;
             candidateModel.find.mockReturnValue({
                 skip: jest.fn().mockReturnThis(),
                 limit: jest.fn().mockReturnThis(),
                 sort: jest.fn().mockReturnThis(),
-                exec: jest.fn().mockResolvedValue(mockCandidates),
+                exec: jest.fn().mockResolvedValue(candidate_mocks_1.mockCandidates),
             });
             candidateModel.countDocuments.mockResolvedValue(mockCount);
             await request(app.getHttpServer())
@@ -156,13 +132,12 @@ describe('Candidates Integration Tests', () => {
             });
         });
         it('should filter candidates by skills', async () => {
-            const mockCandidates = [mockCandidate];
             const mockCount = 1;
             candidateModel.find.mockReturnValue({
                 skip: jest.fn().mockReturnThis(),
                 limit: jest.fn().mockReturnThis(),
                 sort: jest.fn().mockReturnThis(),
-                exec: jest.fn().mockResolvedValue(mockCandidates),
+                exec: jest.fn().mockResolvedValue(candidate_mocks_1.mockCandidates),
             });
             candidateModel.countDocuments.mockResolvedValue(mockCount);
             await request(app.getHttpServer())
@@ -176,13 +151,13 @@ describe('Candidates Integration Tests', () => {
     describe('GET /candidates/:id', () => {
         it('should return a candidate by id', async () => {
             const candidateId = '507f1f77bcf86cd799439011';
-            candidateModel.findById.mockResolvedValue(mockCandidate);
+            candidateModel.findById.mockResolvedValue(candidate_mocks_1.mockCandidate);
             const response = await request(app.getHttpServer())
                 .get(`/candidates/${candidateId}`)
                 .expect(200);
             expect(response.body).toEqual({
                 success: true,
-                data: mockCandidate,
+                data: candidate_mocks_1.mockCandidate,
             });
         });
         it('should return 404 when candidate not found', async () => {
@@ -207,7 +182,7 @@ describe('Candidates Integration Tests', () => {
                 skills: ['JavaScript', 'Node.js', 'React', 'TypeScript'],
             };
             const updatedCandidate = {
-                ...mockCandidate,
+                ...candidate_mocks_1.mockCandidate,
                 name: 'João Silva Santos',
                 skills: ['javascript', 'node.js', 'react', 'typescript'],
             };
@@ -247,13 +222,13 @@ describe('Candidates Integration Tests', () => {
     describe('DELETE /candidates/:id', () => {
         it('should delete a candidate successfully', async () => {
             const candidateId = '507f1f77bcf86cd799439011';
-            candidateModel.findByIdAndDelete.mockResolvedValue(mockCandidate);
+            candidateModel.findByIdAndDelete.mockResolvedValue(candidate_mocks_1.mockCandidate);
             const response = await request(app.getHttpServer())
                 .delete(`/candidates/${candidateId}`)
                 .expect(200);
             expect(response.body).toEqual({
                 success: true,
-                message: 'Candidato deletado com sucesso',
+                message: 'Candidato removido com sucesso',
                 data: { id: candidateId },
             });
         });
@@ -275,7 +250,7 @@ describe('Candidates Integration Tests', () => {
         it('should invite a candidate successfully', async () => {
             const candidateId = '507f1f77bcf86cd799439011';
             const invitedCandidate = {
-                ...mockCandidate,
+                ...candidate_mocks_1.mockCandidate,
                 isInvited: true,
             };
             candidateModel.findByIdAndUpdate.mockResolvedValue(invitedCandidate);
@@ -306,7 +281,7 @@ describe('Candidates Integration Tests', () => {
         it('should uninvite a candidate successfully', async () => {
             const candidateId = '507f1f77bcf86cd799439011';
             const uninvitedCandidate = {
-                ...mockCandidate,
+                ...candidate_mocks_1.mockCandidate,
                 isInvited: false,
             };
             candidateModel.findByIdAndUpdate.mockResolvedValue(uninvitedCandidate);

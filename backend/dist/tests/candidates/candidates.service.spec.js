@@ -34,6 +34,9 @@ describe('CandidatesService', () => {
         MockCandidateConstructor.findByIdAndUpdate = jest.fn();
         MockCandidateConstructor.findByIdAndDelete = jest.fn();
         MockCandidateConstructor.countDocuments = jest.fn();
+        MockCandidateConstructor.findByIdAndUpdate.mockReturnValue({
+            lean: jest.fn().mockResolvedValue({}),
+        });
         const module = await testing_1.Test.createTestingModule({
             providers: [
                 candidates_service_1.CandidatesService,
