@@ -25,6 +25,7 @@ describe('JobsService', () => {
   };
 
   beforeEach(async () => {
+    
     // Create a proper mock constructor that can be called with 'new'
     const MockJobConstructor = jest.fn().mockImplementation((data) => ({
       ...data,
