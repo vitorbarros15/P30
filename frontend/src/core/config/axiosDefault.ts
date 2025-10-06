@@ -21,6 +21,7 @@ class AxiosHttpClient implements HttpClient {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
+      withCredentials: false, // Para evitar problemas de CORS
     });
 
     this.setupInterceptors();
