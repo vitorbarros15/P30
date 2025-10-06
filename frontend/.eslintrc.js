@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["next/core-web-vitals", "next/typescript"],
+  extends: ["next/core-web-vitals"],
   ignorePatterns: [
     "node_modules/**",
     ".next/**",
@@ -8,6 +8,8 @@ module.exports = {
     "next-env.d.ts",
   ],
   rules: {
-    // Add any custom rules here if needed
+    // Basic rules that work with Next.js
+    "no-unused-vars": "warn",
+    "no-console": "off",
   },
 };

@@ -17,7 +17,11 @@ export const metadata: Metadata = {
   description: "Sistema de gestão com autenticação moderna",
   keywords: ["gestão", "sistema", "autenticação", "dashboard"],
   authors: [{ name: "P30 Team" }],
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

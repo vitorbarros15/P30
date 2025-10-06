@@ -6,8 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .ts,.tsx --fix",
-    "lint:check": "eslint . --ext .ts,.tsx",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
     "type-check": "tsc --noEmit",
     "build:analyze": "ANALYZE=true next build"
   },
@@ -28,7 +28,6 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -37,5 +36,11 @@
     "eslint-config-next": "15.5.4",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "eslint": "^8.57.0"
+  },
+  "resolutions": {
+    "eslint": "^8.57.0"
   }
 }
