@@ -1,6 +1,5 @@
 import React from 'react';
 import { ButtonVariant, ButtonSize, BaseComponentProps } from '@/core/types';
-import { designSystem } from '@/core/config/design-system';
 
 interface ButtonProps extends BaseComponentProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;

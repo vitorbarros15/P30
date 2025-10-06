@@ -7,8 +7,7 @@ interface IconPeixe30Props {
 }
 
 const IconPeixe30: React.FC<IconPeixe30Props> = ({ 
-  className = '', 
-  color = 'currentColor' 
+  className = ''
 }) => {
 
   return (

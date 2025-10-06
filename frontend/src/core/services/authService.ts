@@ -1,5 +1,5 @@
 import { httpClient } from '../config/axiosDefault';
-import { LoginCredentials, AuthResponse, User, ApiResponse } from '../types';
+import { LoginCredentials, AuthResponse, User } from '../types';
 
 export const authService = {
   /**

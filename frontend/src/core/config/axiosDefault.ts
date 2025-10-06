@@ -1,12 +1,12 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { ApiResponse, ApiError, RequestConfig } from '../types';
 
 // Interface para facilitar troca de biblioteca no futuro
 export interface HttpClient {
   get<T>(url: string, config?: RequestConfig): Promise<ApiResponse<T>>;
-  post<T>(url: string, data?: any, config?: RequestConfig): Promise<ApiResponse<T>>;
-  put<T>(url: string, data?: any, config?: RequestConfig): Promise<ApiResponse<T>>;
-  patch<T>(url: string, data?: any, config?: RequestConfig): Promise<ApiResponse<T>>;
+  post<T>(url: string, data?: unknown, config?: RequestConfig): Promise<ApiResponse<T>>;
+  put<T>(url: string, data?: unknown, config?: RequestConfig): Promise<ApiResponse<T>>;
+  patch<T>(url: string, data?: unknown, config?: RequestConfig): Promise<ApiResponse<T>>;
   delete<T>(url: string, config?: RequestConfig): Promise<ApiResponse<T>>;
 }
 
@@ -98,21 +98,22 @@ class AxiosHttpClient implements HttpClient {
     };
   }
 
-  private transformError(error: any): ApiError {
+  private transformError(error: unknown): ApiError {
     const apiError: ApiError = {
       message: 'Erro interno do servidor',
       status: 500,
     };
 
-    if (error.response) {
-      apiError.status = error.response.status;
-      apiError.message = error.response.data?.message || error.response.statusText;
-      apiError.errors = error.response.data?.errors;
-      apiError.code = error.response.data?.code;
-    } else if (error.request) {
+    if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as { response: { status: number; data?: { message?: string; errors?: Record<string, string[]>; code?: string }; statusText?: string } };
+      apiError.status = axiosError.response.status;
+      apiError.message = axiosError.response.data?.message || axiosError.response.statusText || 'Erro do servidor';
+      apiError.errors = axiosError.response.data?.errors;
+      apiError.code = axiosError.response.data?.code;
+    } else if (error && typeof error === 'object' && 'request' in error) {
       apiError.message = 'Erro de conexão. Verifique sua internet.';
-    } else {
-      apiError.message = error.message || 'Erro desconhecido';
+    } else if (error && typeof error === 'object' && 'message' in error) {
+      apiError.message = (error as { message: string }).message;
     }
 
     return apiError;
@@ -123,17 +124,17 @@ class AxiosHttpClient implements HttpClient {
     return response as ApiResponse<T>;
   }
 
-  async post<T>(url: string, data?: any, config?: RequestConfig): Promise<ApiResponse<T>> {
+  async post<T>(url: string, data?: unknown, config?: RequestConfig): Promise<ApiResponse<T>> {
     const response = await this.instance.post(url, data, config);
     return response as ApiResponse<T>;
   }
 
-  async put<T>(url: string, data?: any, config?: RequestConfig): Promise<ApiResponse<T>> {
+  async put<T>(url: string, data?: unknown, config?: RequestConfig): Promise<ApiResponse<T>> {
     const response = await this.instance.put(url, data, config);
     return response as ApiResponse<T>;
   }
 
-  async patch<T>(url: string, data?: any, config?: RequestConfig): Promise<ApiResponse<T>> {
+  async patch<T>(url: string, data?: unknown, config?: RequestConfig): Promise<ApiResponse<T>> {
     const response = await this.instance.patch(url, data, config);
     return response as ApiResponse<T>;
   }

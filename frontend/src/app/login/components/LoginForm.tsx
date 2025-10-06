@@ -50,15 +50,18 @@ const LoginForm: React.FC = () => {
       await login(data);
       success('Login realizado com sucesso!');
       router.push('/dashboard');
-    } catch (error: any) {
+    } catch (error: unknown) {
       let errorMessage = 'Erro interno. Tente novamente mais tarde.';
 
-      if (error.response?.status === 401) {
-        errorMessage = 'Email ou senha incorretos';
-      } else if (error.response?.status === 400) {
-        errorMessage = 'Dados inválidos. Verifique suas informações.';
-      } else if (error.response?.status === 429) {
-        errorMessage = 'Muitas tentativas. Tente novamente em alguns minutos.';
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response: { status: number } };
+        if (axiosError.response?.status === 401) {
+          errorMessage = 'Email ou senha incorretos';
+        } else if (axiosError.response?.status === 400) {
+          errorMessage = 'Dados inválidos. Verifique suas informações.';
+        } else if (axiosError.response?.status === 429) {
+          errorMessage = 'Muitas tentativas. Tente novamente em alguns minutos.';
+        }
       }
 
       setFormError('root', {

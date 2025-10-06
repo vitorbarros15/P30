@@ -22,7 +22,7 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       // Initial state
       user: null,
       token: null,
@@ -46,10 +46,14 @@ export const useAuthStore = create<AuthState>()(
             isLoading: false,
             error: null,
           });
-        } catch (error: any) {
+        } catch (error: unknown) {
           const authError: AuthError = {
-            message: error.message || 'Erro ao fazer login',
-            code: error.code,
+            message: (error && typeof error === 'object' && 'message' in error) 
+              ? (error as { message: string }).message 
+              : 'Erro ao fazer login',
+            code: (error && typeof error === 'object' && 'code' in error) 
+              ? (error as { code: string }).code 
+              : undefined,
           };
 
           set({
