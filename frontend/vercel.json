@@ -4,6 +4,6 @@
   "installCommand": "npm ci --legacy-peer-deps",
   "framework": "nextjs",
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://p30-production.up.railway.app"
+    "NEXT_PUBLIC_API_URL": "https://p30-production.up.railway.app/v1/"
   }
 }
