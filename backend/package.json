@@ -12,6 +12,12 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
+    "test:auth": "jest --testPathPattern=tests/auth",
+    "test:jobs": "jest --testPathPattern=tests/jobs",
+    "test:candidates": "jest --testPathPattern=tests/candidates",
+    "test:unit": "jest --testPathPattern=spec.ts",
+    "test:integration": "jest --testPathPattern=integration.spec.ts",
+    "test:all": "jest --testPathPattern=tests",
     "migration:run": "ts-node scripts/run-migrations.ts",
     "migration:create": "nest generate migration",
     "test:db": "ts-node scripts/test-db-connection.ts",
@@ -71,15 +77,27 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
+    "rootDir": ".",
+    "testMatch": [
+      "<rootDir>/tests/**/*.spec.ts",
+      "<rootDir>/tests/**/*.integration.spec.ts"
+    ],
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.(t|j)s",
+      "!src/**/*.spec.ts",
+      "!src/**/*.interface.ts",
+      "!src/**/node_modules/**"
     ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coverageDirectory": "coverage",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup/jest.setup.ts"],
+    "testTimeout": 10000,
+    "verbose": true,
+    "moduleNameMapping": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
   }
 }
