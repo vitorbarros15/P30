@@ -79,8 +79,8 @@ async function bootstrap() {
   
   console.log(`🚀 Server running on port ${port}`);
   console.log(`📊 Environment: ${configService.get('app.nodeEnv')}`);
-  console.log(`🔗 Health check: http:
-  console.log(`📚 API Documentation: http:
+  console.log(`🔗 Health check: /api/v1/health`);
+  console.log(`📚 API Documentation: /api/docs`);
   console.log(`🔐 Default admin: admin@p30.com / 123456`);
   console.log(`💡 Run migrations manually: npm run migration:run`);
 }
