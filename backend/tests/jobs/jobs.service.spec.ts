@@ -26,7 +26,7 @@ describe('JobsService', () => {
 
   beforeEach(async () => {
     
-    // Create a proper mock constructor that can be called with 'new'
+    
     const MockJobConstructor = jest.fn().mockImplementation((data) => ({
       ...data,
       _id: '507f1f77bcf86cd799439011',
@@ -38,7 +38,7 @@ describe('JobsService', () => {
       }),
     })) as any;
 
-    // Add static methods to the constructor
+    
     MockJobConstructor.findOne = jest.fn();
     MockJobConstructor.findById = jest.fn();
     MockJobConstructor.findByIdAndUpdate = jest.fn();
@@ -354,9 +354,9 @@ describe('JobsService', () => {
     it('should reject invalid ObjectId format', () => {
       const invalidIds = [
         'invalid-id',
-        '507f1f77bcf86cd79943901', // too short
-        '507f1f77bcf86cd7994390111', // too long
-        '507f1f77bcf86cd79943901g', // invalid character
+        '507f1f77bcf86cd79943901', 
+        '507f1f77bcf86cd7994390111', 
+        '507f1f77bcf86cd79943901g', 
         '',
         null,
         undefined,

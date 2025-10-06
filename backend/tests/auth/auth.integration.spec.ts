@@ -19,7 +19,6 @@ describe('Auth Integration Tests', () => {
   const mockJwtService = createMockJwtService();
 
   beforeAll(async () => {
-    // Create a proper mock constructor that can be called with 'new'
     const MockUserConstructor = jest.fn().mockImplementation((data) => ({
       ...data,
       _id: '507f1f77bcf86cd799439011',
@@ -29,7 +28,6 @@ describe('Auth Integration Tests', () => {
       }),
     })) as any;
 
-    // Add static methods to the constructor
     MockUserConstructor.findOne = jest.fn();
     MockUserConstructor.findById = jest.fn();
 
@@ -126,7 +124,6 @@ describe('Auth Integration Tests', () => {
     it('should validate required fields', async () => {
       const incompleteDto = {
         name: 'João Silva',
-        // missing email and password
       };
 
       await request(app.getHttpServer())
@@ -155,7 +152,6 @@ describe('Auth Integration Tests', () => {
       userModel.findOne.mockResolvedValue(mockUser);
       mockJwtService.sign.mockReturnValue('jwt-token');
 
-      // Mock bcrypt.compare
       const bcrypt = require('bcrypt');
       jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
 
@@ -198,7 +194,6 @@ describe('Auth Integration Tests', () => {
 
       userModel.findOne.mockResolvedValue(mockUser);
 
-      // Mock bcrypt.compare to return false
       const bcrypt = require('bcrypt');
       jest.spyOn(bcrypt, 'compare').mockResolvedValue(false);
 
@@ -249,7 +244,7 @@ describe('Auth Integration Tests', () => {
 
     it('should validate name length in register', async () => {
       const invalidDto = {
-        name: 'J', // too short
+        name: 'J',
         email: 'joao@email.com',
         password: '123456',
       };
@@ -264,7 +259,7 @@ describe('Auth Integration Tests', () => {
       const invalidDto = {
         name: 'João Silva',
         email: 'joao@email.com',
-        password: '123', // too short
+        password: '123',
       };
 
       await request(app.getHttpServer())

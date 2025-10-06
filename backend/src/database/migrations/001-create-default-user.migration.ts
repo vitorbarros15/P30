@@ -38,7 +38,6 @@ export class CreateDefaultUserMigration implements Migration {
   }
 
   async down(): Promise<void> {
-    // Remove admin user
     await this.userModel.deleteOne({ email: 'admin@p30.com' });
     console.log('🗑️  Default admin user removed');
   }

@@ -20,7 +20,7 @@ export const createMockJwtProvider = (mockJwt: any) => ({
 });
 
 export const setupTestEnvironment = () => {
-  // Mock console methods
+  
   global.console = {
     ...console,
     log: jest.fn(),
@@ -30,13 +30,13 @@ export const setupTestEnvironment = () => {
     error: jest.fn(),
   };
 
-  // Mock bcrypt
+  
   jest.mock('bcrypt', () => ({
     hash: jest.fn().mockResolvedValue('hashed-password'),
     compare: jest.fn().mockResolvedValue(true),
   }));
 
-  // Mock JWT
+  
   jest.mock('@nestjs/jwt', () => ({
     JwtService: jest.fn().mockImplementation(() => ({
       sign: jest.fn().mockReturnValue('jwt-token'),
@@ -44,7 +44,7 @@ export const setupTestEnvironment = () => {
     })),
   }));
 
-  // Mock MongoDB
+  
   jest.mock('mongoose', () => ({
     ...jest.requireActual('mongoose'),
     connect: jest.fn(),

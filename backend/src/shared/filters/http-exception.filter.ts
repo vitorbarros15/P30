@@ -17,7 +17,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
 
-    // Se for uma BusinessException, usar a resposta estruturada
     if (exception instanceof BusinessException) {
       const errorResponse: ErrorResponseDto = {
         success: false,
@@ -32,7 +31,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       return response.status(status).json(errorResponse);
     }
 
-    // Para outras HttpExceptions, usar formato padrão
     const errorResponse: ErrorResponseDto = {
       success: false,
       message: exception.message,

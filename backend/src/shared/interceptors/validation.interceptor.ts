@@ -14,7 +14,6 @@ export class ValidationInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       catchError((error) => {
-        // Se for erro de validação do class-validator
         if (error.response && Array.isArray(error.response.message)) {
           const validationErrors = error.response.message.map((msg: string) => {
             const parts = msg.split(' ');
@@ -31,7 +30,6 @@ export class ValidationInterceptor implements NestInterceptor {
           );
         }
 
-        // Se for erro de validação do Zod
         if (error.name === 'ZodError') {
           const validationErrors = error.issues.map((issue: any) => ({
             field: issue.path.join('.'),

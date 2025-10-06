@@ -10,7 +10,6 @@ import { RegisterDto } from '../../src/modules/auth/dto/register.dto';
 import { LoginDto } from '../../src/modules/auth/dto/login.dto';
 import { createMockJwtService } from '../utils/auth-mocks';
 
-// Mock bcrypt
 jest.mock('bcrypt');
 const mockedBcrypt = bcrypt as jest.Mocked<typeof bcrypt>;
 
@@ -75,13 +74,10 @@ describe('AuthService', () => {
     };
 
     it('should register a new user successfully', async () => {
-      // Mock user not exists
       userModel.findOne.mockResolvedValue(null);
       
-      // Mock bcrypt hash
       mockedBcrypt.hash.mockResolvedValue('hashed-password' as never);
       
-      // Mock JWT sign
       mockJwtService.sign.mockReturnValue('jwt-token');
 
       const result = await service.register(registerDto);

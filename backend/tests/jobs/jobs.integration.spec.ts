@@ -14,7 +14,6 @@ describe('Jobs Integration Tests', () => {
   let jobModel: any;
 
   beforeAll(async () => {
-    // Create a proper mock constructor that can be called with 'new'
     const MockJobConstructor = jest.fn().mockImplementation((data) => ({
       ...data,
       _id: '507f1f77bcf86cd799439011',
@@ -26,7 +25,6 @@ describe('Jobs Integration Tests', () => {
       }),
     })) as any;
 
-    // Add static methods to the constructor
     MockJobConstructor.findOne = jest.fn();
     MockJobConstructor.findById = jest.fn();
     MockJobConstructor.findByIdAndUpdate = jest.fn();
@@ -104,7 +102,6 @@ describe('Jobs Integration Tests', () => {
     it('should validate required fields', async () => {
       const incompleteDto = {
         title: 'Desenvolvedor',
-        // missing other required fields
       };
 
       await request(app.getHttpServer())
@@ -376,7 +373,7 @@ describe('Jobs Integration Tests', () => {
 
     it('should validate update data', async () => {
       const invalidDto = {
-        title: 'a'.repeat(101), // too long
+        title: 'a'.repeat(101), 
       };
 
       await request(app.getHttpServer())
@@ -438,7 +435,7 @@ describe('Jobs Integration Tests', () => {
   describe('Validation Tests', () => {
     it('should validate job data format', async () => {
       const invalidDto = {
-        title: 'a'.repeat(101), // title too long
+        title: 'a'.repeat(101), 
         description: 'Descrição muito longa para testar validação de tamanho mínimo',
         location: 'São Paulo',
         salaryRange: 'R$ 5.000 - R$ 8.000',
@@ -457,7 +454,7 @@ describe('Jobs Integration Tests', () => {
         description: 'Descrição muito longa para testar validação de tamanho mínimo',
         location: 'São Paulo',
         salaryRange: 'R$ 5.000 - R$ 8.000',
-        skills: Array(21).fill('skill'), // too many skills
+        skills: Array(21).fill('skill'), 
       };
 
       await request(app.getHttpServer())
@@ -471,7 +468,7 @@ describe('Jobs Integration Tests', () => {
         title: 'Desenvolvedor',
         description: 'Descrição muito longa para testar validação de tamanho mínimo',
         location: 'São Paulo',
-        salaryRange: 'a'.repeat(51), // too long
+        salaryRange: 'a'.repeat(51), 
         skills: ['React'],
       };
 
