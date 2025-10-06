@@ -27,7 +27,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       token: null,
       isAuthenticated: false,
-      isLoading: false,
+      isLoading: true, // Start with loading true to prevent hydration mismatch
       error: null,
 
       // Actions
@@ -113,6 +113,11 @@ export const useAuthStore = create<AuthState>()(
         token: state.token,
         isAuthenticated: state.isAuthenticated,
       }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.isLoading = false;
+        }
+      },
     }
   )
 );
